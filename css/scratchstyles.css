@@ -1,0 +1,44 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: whitesmoke;
+    background-color: darkcyan;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: khaki;
+}
+
+h2 {
+    font-family: 'Times New Roman', Times, serif;
+    color: aqua;
+    
+}
+
+h4 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: rgb(218, 183, 119);
+    font-size: 25px;
+    font-weight: 200;
+
+    
+}
+
+img {
+    border: black 5px solid;
+    padding: 2px;
+    margin: 2px;
+ }
+
+ li{
+    list-style-position: inside;
+    text-align: center;
+ }
+
+ ol{
+    list-style-position: inside;
+    text-align: center;
+ }
+
+ 
