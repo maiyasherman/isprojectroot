@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: cyan;
+        }
+
+        .game-container {
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 2em;
+        }
+
+        #word-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            grid-gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .grid-cell {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+            font-size: 1.5em;
+            background-color: white;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            width: 60%;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            background-color: #ccc;
+        }
+
+        #message {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: red;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 1.2em;
+            margin-top: 10px;
+            width: 70%;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Wordle Clone</h1>
+        <p>Select a word from the list:</p>
+        <select id="word-select">
+            <!-- Word options will be populated here -->
+        </select>
+        <div id="word-grid">
+            <!-- Grid for the guesses -->
+        </div>
+        <input type="text" id="guess-input" maxlength="5" placeholder="Enter guess" />
+        <button id="submit-guess">Submit Guess</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const wordList = ["apple", "table", "plane", "grape", "money"]; // A simple list of words
+        let targetWord = wordList[Math.floor(Math.random() * wordList.length)];
+        const maxGuesses = 6;
+        let currentGuess = 0;
+        let guesses = [];
+
+        const wordGrid = document.getElementById("word-grid");
+        const guessInput = document.getElementById("guess-input");
+        const submitButton = document.getElementById("submit-guess");
+        const message = document.getElementById("message");
+        const wordSelect = document.getElementById("word-select");
+
+        // Populate the word select dropdown
+        function populateWordSelect() {
+            wordList.forEach(word => {
+                const option = document.createElement("option");
+                option.value = word;
+                option.textContent = word;
+                wordSelect.appendChild(option);
+            });
+        }
+
+        // Set the target word based on user selection
+        wordSelect.addEventListener("change", (event) => {
+            targetWord = event.target.value;
+            message.textContent = `Selected word: ${targetWord}`;
+            resetGame();
+        });
+
+        // Initialize the word grid with empty cells
+        function initWordGrid() {
+            for (let i = 0; i < maxGuesses; i++) {
+                for (let j = 0; j < 5; j++) {
+                    const cell = document.createElement("div");
+                    cell.classList.add("grid-cell");
+                    wordGrid.appendChild(cell);
+                }
+            }
+        }
+
+        // Reset the game state
+        function resetGame() {
+            currentGuess = 0;
+            guesses = [];
+            message.textContent = "";
+            guessInput.value = "";
+            const cells = document.querySelectorAll(".grid-cell");
+            cells.forEach(cell => cell.textContent = "");
+        }
+
+        // Handle submitting a guess
+        function submitGuess() {
+            const guess = guessInput.value.toLowerCase();
+
+            if (guess.length !== 5) {
+                message.textContent = "Please enter a valid 5-letter word.";
+                return;
+            }
+
+            guesses.push(guess);
+            currentGuess++;
+
+            // Display the guess in the grid
+            const cells = document.querySelectorAll(".grid-cell");
+            const startIndex = (currentGuess - 1) * 5;
+            for (let i = 0; i < 5; i++) {
+                const cell = cells[startIndex + i];
+                cell.textContent = guess[i];
+                // Apply color based on the guess result
+                if (guess[i] === targetWord[i]) {
+                    cell.style.backgroundColor = "green"; // Correct letter, correct position
+                } else if (targetWord.includes(guess[i])) {
+                    cell.style.backgroundColor = "yellow"; // Correct letter, wrong position
+                } else {
+                    cell.style.backgroundColor = "gray"; // Incorrect letter
+                }
+            }
+
+            // Check if the guess is correct
+            if (guess === targetWord) {
+                message.textContent = "You Win!";
+                submitButton.disabled = true;
+            } else if (currentGuess === maxGuesses) {
+                message.textContent = `Game Over! The word was "${targetWord}".`;
+                submitButton.disabled = true;
+            } else {
+                message.textContent = `Guess #${currentGuess + 1}`;
+            }
+
+            guessInput.value = "";
+            guessInput.focus();
+        }
+
+        // Event listeners
+        submitButton.addEventListener("click", submitGuess);
+        guessInput.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                submitGuess();
+            }
+        });
+
+        // Initialize the game
+        populateWordSelect();
+        initWordGrid();
+    </script>
+</body>
+</html>

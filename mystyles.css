@@ -1,0 +1,28 @@
+
+ /* Header of website */
+header.masthead .masthead-heading {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* button color about */
+.btn-primary {
+    --bs-btn-bg: #f07c2300;
+    --bs-btn-border-color: #f7a60554;
+    --bs-btn-hover-bg: #fcfbfa00;
+}
+
+element.style {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+/* hover over color  */
+/* .portfolio-hover{ */
+#portfolio .portfolio-item .portfolio-link .portfolio-hover {
+    background: rgba(100, 193, 230, 0.576);
+}
+.team-member img{
+    height: 18rem;
+    width: 14rem;
+}
+.text-muted {
+    color: rgb(244, 190, 64) !important;
+}
